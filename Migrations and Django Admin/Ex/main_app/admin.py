@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from main_app.models import EventRegistration, Movie, Student
+from main_app.models import EventRegistration, Movie, Student, Supplier, Course
 
 
 # Register your models here.
@@ -23,7 +23,7 @@ class StudentAdmin(admin.ModelAdmin):
     list_display = ["first_name", "last_name", "age", "grade"]
     list_filter = ["age", "grade", "date_of_birth"]
     search_fields = ['first_name']
-    fieldsets = [
+    fieldsets = (
         ('Personal Information', {
             'fields': ("first_name", "last_name", "age", "date_of_birth"
 
@@ -33,4 +33,39 @@ class StudentAdmin(admin.ModelAdmin):
             'fields': ('grade',)
         }
 
-         )]
+         ))
+
+
+@admin.register(Supplier)
+class SupplierAdmin(admin.ModelAdmin):
+    list_display = ["name", "email", "phone"]
+    list_filter = ["name", "phone"]
+    search_fields = ["email", "contact_person", "phone"]
+    list_per_page = 20
+    fieldsets = [
+        ('Information', {
+            'fields': [
+                "name",
+                "contact_person",
+                "email",
+                "address"
+            ],
+        }),
+    ]
+
+
+@admin.register(Course)
+class CourseAdmin(admin.ModelAdmin):
+    list_display = ["title", "lecturer", "price", "start_date"]
+    list_filter = ["is_published", "lecturer"]
+    search_fields = ["title", "lecturer"]
+    fieldsets = (
+        ('Course Information', {
+            'fields': ["title", "lecturer", "price", "start_date", "is_published"]
+        }),
+        ('Description', {
+            'fields': ['description',]
+        })
+
+    )
+    readonly_fields = ['start_date']
