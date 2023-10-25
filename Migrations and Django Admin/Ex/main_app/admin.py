@@ -28,4 +28,9 @@ class StudentAdmin(admin.ModelAdmin):
             'fields': ("first_name", "last_name", "age", "date_of_birth"
 
                        ),
-        })]
+        }),
+        ('Academic Information', {
+            'fields': ('grade',)
+        }
+
+         )]
