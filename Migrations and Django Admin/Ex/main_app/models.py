@@ -72,3 +72,16 @@ class Person(models.Model):
     def __str__(self):
         return f"Name: {self.name}"
 
+
+class Item(models.Model):
+    name = models.CharField(100)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.PositiveIntegerField(default=1)
+    rarity = models.CharField(max_length=20, default='empty')
+
+
+class Smartphone(models.Model):
+    brand = models.CharField(100)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    category = models.CharField(max_length=20, default='empty')
+
