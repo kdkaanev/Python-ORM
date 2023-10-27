@@ -85,3 +85,43 @@ class Smartphone(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     category = models.CharField(max_length=20, default='empty')
 
+
+class Order(models.Model):
+
+    CHOICES = [
+        ("pending","Pending"),
+        ("comp", "Completed"),
+        ("cancel", "Cancelled"),
+    ]
+
+    product_name  = models.CharField(max_length=30)
+    customer_name = models.CharField(max_length=100)
+    order_date = models.DateField()
+    status = models.CharField(max_length=30, choices=CHOICES)
+    amount = models.PositiveIntegerField(default=1)
+    product_price = models.DecimalField(max_digits=10, decimal_places=2)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    warranty = models.CharField(default="No warranty")
+    delivery = models.DateField(blank=True, null=True)
+
+    def __str__(self):
+        return f"Order #{self.id} - {self.customer_name}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
