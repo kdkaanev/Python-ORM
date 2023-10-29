@@ -114,10 +114,24 @@ def delete_review_by_id(revew_id):
     review_to_deleted.delete()
     return f"Review with id {review_to_deleted.reviewer_name} deleted"
 
+def filter_authors_by_nationalities(nationaliyy):
+    autors = Author.objects.filter(nationality=nationaliyy).order_by('first_name', 'last_name')
+    result = [
+        autor.biography
+        if autor.biography is not None
+        else f"{autor.first_name} {autor.last_name}"
+        for autor in autors
+    ]
+    return '\n'.join(result)
 
-print(delete_review_by_id(4))
-print(delete_review_by_id(1))
-print(delete_review_by_id(8))
+print("American authors:")
+print(filter_authors_by_nationalities('American'))
+print()
+print("British authors:")
+print(filter_authors_by_nationalities('British'))
+print()
+print("Authors with no nationalities:")
+print(filter_authors_by_nationalities(None))
 
 # Run and print your queries
 # print(add_records_to_database())
