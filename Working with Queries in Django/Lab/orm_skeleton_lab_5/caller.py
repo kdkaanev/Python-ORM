@@ -113,7 +113,7 @@ def order_books_by_year():
 def delete_review_by_id(revew_id):
     review_to_deleted = Review.objects.get(id=revew_id)
     review_to_deleted.delete()
-    return f"Review with id {review_to_deleted.reviewer_name} deleted"
+    return f"Review with id {review_to_deleted.reviewer_name} was deleted"
 
 
 def filter_authors_by_nationalities(nationality):
