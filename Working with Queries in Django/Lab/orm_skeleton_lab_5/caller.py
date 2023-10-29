@@ -109,6 +109,15 @@ def order_books_by_year():
     ]
     return '\n'.join(result)
 
+def delete_review_by_id(revew_id):
+    review_to_deleted = Review.objects.get(id=revew_id)
+    review_to_deleted.delete()
+    return f"Review with id {review_to_deleted.reviewer_name} deleted"
+
+
+print(delete_review_by_id(4))
+print(delete_review_by_id(1))
+print(delete_review_by_id(8))
+
 # Run and print your queries
 # print(add_records_to_database())
-print(order_books_by_year())
