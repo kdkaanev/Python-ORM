@@ -102,20 +102,22 @@ def find_authors_nationalities():
 
 
 def order_books_by_year():
-    found_books = Book.objects.order_by('publication_year','title')
+    found_books = Book.objects.order_by('publication_year', 'title')
     result = [
         f"{book.publication_year} year: {book.title} by {book.author}"
         for book in found_books
     ]
     return '\n'.join(result)
 
+
 def delete_review_by_id(revew_id):
     review_to_deleted = Review.objects.get(id=revew_id)
     review_to_deleted.delete()
     return f"Review with id {review_to_deleted.reviewer_name} deleted"
 
-def filter_authors_by_nationalities(nationaliyy):
-    autors = Author.objects.filter(nationality=nationaliyy).order_by('first_name', 'last_name')
+
+def filter_authors_by_nationalities(nationality):
+    autors = Author.objects.filter(nationality=nationality).order_by('first_name', 'last_name')
     result = [
         autor.biography
         if autor.biography is not None
@@ -124,14 +126,18 @@ def filter_authors_by_nationalities(nationaliyy):
     ]
     return '\n'.join(result)
 
-print("American authors:")
-print(filter_authors_by_nationalities('American'))
-print()
-print("British authors:")
-print(filter_authors_by_nationalities('British'))
-print()
-print("Authors with no nationalities:")
-print(filter_authors_by_nationalities(None))
+
+def filter_authors_by_birth_year(start_year, final_year):
+    authors = Author.objects.filter(birth_date__range=(start_year, final_year)).order_by("-birth_date")
+
+    result = [
+        f"{a.birth_date}: {a.first_name} {a.last_name}"
+        for a in authors
+    ]
+    return '\n'.join(result)
+
+
+
 
 # Run and print your queries
 # print(add_records_to_database())
