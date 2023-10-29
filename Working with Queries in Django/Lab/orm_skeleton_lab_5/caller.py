@@ -113,7 +113,7 @@ def order_books_by_year():
 def delete_review_by_id(revew_id):
     review_to_deleted = Review.objects.get(id=revew_id)
     review_to_deleted.delete()
-    return f"Review with id {review_to_deleted.reviewer_name} was deleted"
+    return f"Review with {review_to_deleted.reviewer_name} was deleted"
 
 
 def filter_authors_by_nationalities(nationality):
@@ -143,6 +143,9 @@ def change_reviewer_name(reviewer_name, new_name):
     return result
 
 
+print(delete_review_by_id(4))
+print(delete_review_by_id(1))
+print(delete_review_by_id(8))
 
 # Run and print your queries
 # print(add_records_to_database())
