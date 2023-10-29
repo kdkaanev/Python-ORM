@@ -91,9 +91,24 @@ def find_books_by_genre_and_language(book_genre, book_language):
     )
     return found_books
 
-print(find_books_by_genre_and_language("Romance", "English"))
-print(find_books_by_genre_and_language("Poetry", "Spanish"))
-print(find_books_by_genre_and_language("Mystery", "English"))
+
+def find_authors_nationalities():
+    found_authors = Author.objects.exclude(nationality=None)
+    result = [
+        f"{autor.first_name} {autor.last_name} is {autor.nationality}"
+        for autor in found_authors
+    ]
+    return '\n'.join(result)
+
+
+def order_books_by_year():
+    found_books = Book.objects.order_by('publication_year','title')
+    result = [
+        f"{book.publication_year} year: {book.title} by {book.author}"
+        for book in found_books
+    ]
+    return '\n'.join(result)
 
 # Run and print your queries
 # print(add_records_to_database())
+print(order_books_by_year())
