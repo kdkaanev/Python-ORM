@@ -1,18 +1,6 @@
 from django.db import models
 
-CHOIS_BRAND = [
-    ('As', 'Asus'),
-    ('Ac', 'Acer'),
-    ('Ap', 'Apple'),
-    ('Le', 'Lenovo'),
-    ('De', 'Dell'),
-]
-OPERATION_SYSTEM_CHOICES = [
-    ('W', 'Windows'),
-    ('M', 'MacOS'),
-    ('L', 'Linux'),
-    ('Ch', 'Chrome OS')
-]
+
 # Create your models here.
 class ArtworkGallery(models.Model):
     artist_name = models.CharField(max_length=100)
@@ -22,6 +10,19 @@ class ArtworkGallery(models.Model):
 
 
 class Laptop(models.Model):
+    CHOIS_BRAND = (
+        ('Asus', 'Asus'),
+        ('Acer', 'Acer'),
+        ('Apple', 'Apple'),
+        ('Lenovo', 'Lenovo'),
+        ('Dell', 'Dell'),
+        )
+    OPERATION_SYSTEM_CHOICES = (
+        ('Windows', 'Windows'),
+        ('MacOS', 'MacOS'),
+        ('Linux', 'Linux'),
+        ('Chrome OS', 'Chrome OS')
+        )
     brand = models.CharField(choices=CHOIS_BRAND)
     processor = models.CharField(max_length=100)
     memory = models.PositiveIntegerField(help_text='Memory in GB')
