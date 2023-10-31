@@ -7,7 +7,7 @@ import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm_skeleton.settings")
 django.setup()
 
-from main_app.models import ArtworkGallery, Laptop, ChessPlayer, Meal, Dungeon
+from main_app.models import ArtworkGallery, Laptop, ChessPlayer, Meal, Dungeon, Workout
 
 from typing import List
 
@@ -63,15 +63,15 @@ def bulk_create_chess_players(*args: List[ChessPlayer]) -> None:
 
 
 def delete_chess_players() -> None:
-    ChessPlayer.objects.filter(title__in='no title').delete()
+    ChessPlayer.objects.filter(title='no title').delete()
 
 
 def change_chess_games_won() -> None:
-    ChessPlayer.objects.filter(title__in='GM').update(games_won=30)
+    ChessPlayer.objects.filter(title='GM').update(games_won=30)
 
 
 def change_chess_games_lost() -> None:
-    ChessPlayer.objects.filter(title__in='no title').update(games_lost=25)
+    ChessPlayer.objects.filter(title='no title').update(games_lost=25)
 
 
 def change_chess_games_drawn() -> None:
@@ -83,15 +83,15 @@ def grand_chess_title_GM() -> None:
 
 
 def grand_chess_title_IM() -> None:
-    ChessPlayer.objects.filter(rating__range=(2399, 2300)).update(title='IM')
+    ChessPlayer.objects.filter(rating__range=(2300, 2399)).update(title='IM')
 
 
 def grand_chess_title_FM() -> None:
-    ChessPlayer.objects.filter(rating__range=(2299, 2200)).update(title='FM')
+    ChessPlayer.objects.filter(rating__range=(2200, 2299)).update(title='FM')
 
 
 def grand_chess_title_regular_player() -> None:
-    ChessPlayer.objects.filter(rating__range=(2199, 0)).update(title='regular player')
+    ChessPlayer.objects.filter(rating__range=(0, 2199)).update(title='regular player')
 
 
 def set_new_chefs() -> None:
@@ -160,45 +160,37 @@ def set_new_locations() -> None:
     Dungeon.objects.filter(recommended_level=50).update(location='Grimstone Mines')
     Dungeon.objects.filter(recommended_level=75).update(location='Shadowed Abyss')
 
-# Create two instances
-dungeon1 = Dungeon(
-    name="Dungeon 1",
-    boss_name="Boss 1",
-    boss_health=1000,
-    recommended_level=75,
-    reward="Gold",
-    location="Eternal Hell",
-    difficulty="Hard",
-)
 
-dungeon2 = Dungeon(
-    name="Dungeon 2",
-    boss_name="Boss 2",
-    boss_health=500,
-    recommended_level=25,
-    reward="Experience",
-    location="Crystal Caverns",
-    difficulty="Easy",
-)
+def show_workouts() -> str:
+    workout = Workout.objects.filter(workout_type__in=["Calisthenics", "CrossFit"])
+    result = [
+        f"{w.name} from {w.workout_type} type has {w.difficulty} difficulty!"
+        for w in workout
+    ]
+    return '\n'.join(result)
 
-# Bulk save the instances
-bulk_create_dungeons([dungeon1, dungeon2])
 
-# Update boss's health
-update_dungeon_bosses_health()
+def get_high_difficulty_cardio_workouts():
+   return Workout.objects.filter(workout_type__exact='Cardio', difficulty__exact='High').order_by('instructor')
 
-# Show hard dungeons
-hard_dungeons_info = show_hard_dungeons()
-print(hard_dungeons_info)
 
-# Change dungeon names based on difficulty
-update_dungeon_names()
-dungeons = Dungeon.objects.all()
-print(dungeons[0].name)
-print(dungeons[1].name)
+def set_new_instructors() -> None:
+    Workout.objects.filter(workout_type__exact='Cardio').update(instructor='John Smith')
+    Workout.objects.filter(workout_type__exact='Strength').update(instructor='Michael Williams')
+    Workout.objects.filter(difficulty__exact='Yoga').update(instructor='Emily Johnson')
+    Workout.objects.filter(difficulty__exact='CrossFit').update(instructor='Sarah Davis')
+    Workout.objects.filter(difficulty__exact='Calisthenics').update(instructor='Chris Heria')
 
-# Change the dungeon rewards
-update_dungeon_rewards()
-dungeons = Dungeon.objects.all()
-print(dungeons[0].reward)
-print(dungeons[1].reward)
+
+def set_new_duration_times() -> None:
+    Workout.objects.filter(instructor__exact='John Smith').update(duration='15 minutes')
+    Workout.objects.filter(instructor__exact='Sarah Davis').update(duration='30 minutes')
+    Workout.objects.filter(instructor__exact='Chris Heria').update(duration='45 minutes')
+    Workout.objects.filter(instructor__exact='Michael Williams').update(duration='1 hour')
+    Workout.objects.filter(instructor__exact='Emily Johnson').update(duration='1 hour and 30 minutes')
+
+
+def delete_workouts() -> None:
+    Workout.objects.exclude(workout_type__in=['Calisthenics', 'Strength']).delete()
+
+
