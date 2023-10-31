@@ -16,20 +16,19 @@ class Laptop(models.Model):
         ('Apple', 'Apple'),
         ('Lenovo', 'Lenovo'),
         ('Dell', 'Dell'),
-        )
+    )
     OPERATION_SYSTEM_CHOICES = (
         ('Windows', 'Windows'),
         ('MacOS', 'MacOS'),
         ('Linux', 'Linux'),
         ('Chrome OS', 'Chrome OS')
-        )
-    brand = models.CharField(choices=CHOIS_BRAND)
+    )
+    brand = models.CharField(max_length=20, choices=CHOIS_BRAND)
     processor = models.CharField(max_length=100)
     memory = models.PositiveIntegerField(help_text='Memory in GB')
     storage = models.PositiveIntegerField(help_text='Storage in GB')
-    operation_system = models.CharField(choices=OPERATION_SYSTEM_CHOICES)
+    operation_system = models.CharField(max_length=20, choices=OPERATION_SYSTEM_CHOICES)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-
 
 
 class ChessPlayer(models.Model):
