@@ -67,12 +67,11 @@ def get_reviews_with_high_ratings(threshold: int) -> QuerySet[Review]:
 
 
 def get_products_with_no_reviews() -> QuerySet[Product]:
-    return Product.objects.filter(review__isnull=True)
+    return Product.objects.filter(review__isnull=True).order_by('-name')
 
 
 def delete_products_without_reviews():
-    get_products_with_no_reviews().delete()
-
+    return Product.objects.filter(review__isnull=True).delete()
 
 def calculate_licenses_expiration_dates():
     licenses = DrivingLicense.objects.all()
