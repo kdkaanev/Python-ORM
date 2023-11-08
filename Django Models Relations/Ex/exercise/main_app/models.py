@@ -51,11 +51,14 @@ class DrivingLicense(models.Model):
 class Owner(models.Model):
     name = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.name
+
 
 class Car(models.Model):
     model = models.CharField(max_length=50)
     year = models.PositiveIntegerField()
-    owner = models.ForeignKey(to=Owner, on_delete=models.CASCADE, blank=True, null=True,related_name='cars')
+    owner: Owner = models.ForeignKey(to=Owner, on_delete=models.CASCADE, blank=True, null=True,related_name='cars')
 
 
 class Registration(models.Model):

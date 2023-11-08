@@ -94,7 +94,7 @@ from datetime import datetime, date, timedelta
 
 def register_car_by_owner(owner: Owner) -> str:
     registration = Registration.objects.filter(car__isnull=True).first()
-    car = Car.objects.filter(registration__isnull=True).first()
+    car = Car.objects.filter(registration__isnull=True, owner = owner).first()
 
     car.owner = owner
     car.registration = registration
