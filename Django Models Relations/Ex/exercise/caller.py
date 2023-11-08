@@ -1,5 +1,5 @@
 import os
-from datetime import datetime, date
+
 
 import django
 
@@ -12,6 +12,7 @@ from main_app.models import Artist, Song, Product, Review, DrivingLicense, Drive
 from django.db.models import QuerySet, Avg
 
 from main_app.models import Author, Book
+from datetime import datetime, date, timedelta
 
 
 # Create queries within functions
@@ -73,21 +74,21 @@ def get_products_with_no_reviews() -> QuerySet[Product]:
 def delete_products_without_reviews():
     return Product.objects.filter(reviews__isnull=True).delete()
 
-def calculate_licenses_expiration_dates():
-    licenses = DrivingLicense.objects.all()
-    expiration_date = 0
-    result = []
-    for license in licenses:
-        expiration_date = license.issue_date + datetime.timedelta(days=365)
-        result.append(f'License with id: {license.id} expires on {expiration_date}!')
 
-    return '\n'.join(result)
+def calculate_licenses_expiration_dates() ->str:
+    licenses = DrivingLicense.objects.all().order_by('-licence      -number')
+
+    return '\n'.join(str(l) for l in licenses)
 
 
 def get_drivers_with_expired_licenses(due_date):
-    result = []
-    licenses = DrivingLicense.objects.filter(issue_date__lt=due_date - datetime.timedelta(days=365))
-    result.append(licenses.driver)
+    expiration_date = due_date - timedelta(days=365)
+    expired_drivers = Driver.objects.filter(drivinglicense__issue_date__gt=expiration_date)
+
+    return expired_drivers
 
 
-
+# Get drivers with expired licenses
+drivers_with_expired_licenses = get_drivers_with_expired_licenses(date(2023, 1, 1))
+for driver in drivers_with_expired_licenses:
+    print(f"{driver.first_name} {driver.last_name} has to renew their driving license!")

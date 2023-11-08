@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.db import models
 
 
@@ -24,24 +26,23 @@ class Artist(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
+
 class Review(models.Model):
     description = models.TextField(max_length=200)
     rating = models.IntegerField()
-    product = models.ForeignKey(Product, on_delete=models.CASCADE,blank=True, null=True,related_name='reviews')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True, related_name='reviews')
 
 
 class Driver(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
 
+
 class DrivingLicense(models.Model):
     license_number = models.CharField(max_length=10, unique=True)
     issue_date = models.DateField()
-    driver = models.OneToOneField(Driver, on_delete=models.CASCADE)
+    driver = models.OneToOneField(to=Driver, on_delete=models.CASCADE)
 
-
-
-
-
-
-
+    def __str__(self):
+        expiration_date = self.issue_date = timedelta(days=365)
+        return f"License with id: {self.id} expires on {expiration_date}!"
