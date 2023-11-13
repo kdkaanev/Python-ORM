@@ -3,6 +3,15 @@ from django.db import models
 from datetime import date
 
 # Create your models here.
+
+class BooleanChoiceField(models.BooleanField):
+    def __init__(self,*args, **kwargs):
+        kwargs['choices'] = (
+            (True, 'Available'),
+            (False, 'Not Available')
+        )
+        kwargs['default'] = True
+        super().__init__(*args, **kwargs)
 class Animal(models.Model):
     name = models.CharField(max_length=100)
     species = models.CharField(max_length=100)
@@ -59,6 +68,10 @@ class ZooKeeper(Employee):
 
 class Veterinarian(Employee):
     license_number = models.CharField(max_length=10)
+    availability = BooleanChoiceField()
+
+    def is_abailable(self):
+        return self.availability
 
 
 class ZooDisplayAnimal(Animal):
