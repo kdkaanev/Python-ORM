@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -63,20 +64,15 @@ class Message(models.Model):
     receiver = models.ForeignKey(to=UserProfile, related_name='received_messages', on_delete=models.CASCADE)
     content = models.TextField()
     is_read = models.BooleanField(default=False)
-    
 
     def mark_as_read(self):
         self.is_read = True
 
-    
-
     def mark_as_unread(self):
         self.is_read = False
 
-
     def reply_to_message(self, reply_content, receiver):
-       return Message(sender=self.receiver,receiver=receiver,content=reply_content)
-
+        return Message(sender=self.receiver, receiver=receiver, content=reply_content)
 
     def forward_message(self, sender, receiver):
         return Message(sender=sender, receiver=receiver, content=self.content)
@@ -87,10 +83,39 @@ class StudentIDField(models.PositiveIntegerField):
         try:
             return int(value)
         except ValueError:
-            pass #berrer rase ValidationError
-
+            pass  # berrer rase ValidationError
 
 
 class Student(models.Model):
     name = models.CharField(max_length=100)
     student_id = StudentIDField()
+
+
+
+class MaskedCreditCardField(models.CharField):
+
+
+    def get_prep_value(self, value):
+        return f"****-****-****-{value[-4:]}"
+
+    def to_python(self, value):
+        if not isinstance(value, str):
+            raise ValidationError("The card number must be a string")
+        if not value.isdigit():
+            raise ValidationError("The card number must contain only digits")
+        if len(value) != 16:
+            raise ValidationError("The card number must be exactly 16 characters long")
+
+
+class CreditCard(models.Model):
+    card_owner = models.CharField(max_length=100)
+    card_number = MaskedCreditCardField(max_length=20)
+
+
+
+
+
+
+
+
+
