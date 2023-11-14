@@ -82,6 +82,15 @@ class Message(models.Model):
         return Message(sender=sender, receiver=receiver, content=self.content)
 
 
-    
+class StudentIDField(models.PositiveIntegerField):
+    def to_python(self, value):
+        try:
+            return int(value)
+        except ValueError:
+            pass #berrer rase ValidationError
 
 
+
+class Student(models.Model):
+    name = models.CharField(max_length=100)
+    student_id = StudentIDField()
