@@ -169,6 +169,7 @@ class BaseReservation(models.Model):
 class RegularReservation(BaseReservation):
     def save(self, *args, **kwargs):
         super().clean()
+        super().save(*args, **kwargs)
         return f"Regular reservation for room {self.room.number}"
 
 
@@ -176,10 +177,11 @@ class RegularReservation(BaseReservation):
 class SpecialReservation(BaseReservation):
     def save(self, *args, **kwargs):
         super().clean()
+        super().save(*args, **kwargs)
         return f"Special reservation for room {self.room.number}"
 
     def extend_reservation(self, days: int):
-        reservations = self.__class__.objects.filter(
+        reservations = SpecialReservation.objects.filter(
                 room=self.room,
                 end_date__gte=self.start_date,
                 start_date__lte=self.end_date + timedelta(days=days),
