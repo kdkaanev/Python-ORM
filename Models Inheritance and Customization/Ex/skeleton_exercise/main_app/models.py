@@ -64,18 +64,22 @@ class Message(models.Model):
     content = models.TextField()
     is_read = models.BooleanField(default=False)
     
-    @property
+
     def mark_as_read(self):
         self.is_read = True
-        return self.is_read
+
     
-    @property
+
     def mark_as_unread(self):
         self.is_read = False
-        return self.is_read
+
 
     def reply_to_message(self, reply_content, receiver):
-       pass
+       return Message(sender=self.receiver,receiver=receiver,content=reply_content)
+
+
+    def forward_message(self, sender, receiver):
+        return Message(sender=sender, receiver=receiver, content=self.content)
 
 
     
