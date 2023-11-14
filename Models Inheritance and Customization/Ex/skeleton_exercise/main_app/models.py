@@ -93,10 +93,11 @@ class Student(models.Model):
 
 
 class MaskedCreditCardField(models.CharField):
+    def __init__(self,*args, **kwargs):
+        kwargs['max_length'] = 20
+        super().__init__(*args, **kwargs)
 
 
-    def get_prep_value(self, value):
-        return f"****-****-****-{value[-4:]}"
 
     def to_python(self, value):
         if not isinstance(value, str):
@@ -105,6 +106,8 @@ class MaskedCreditCardField(models.CharField):
             raise ValidationError("The card number must contain only digits")
         if len(value) != 16:
             raise ValidationError("The card number must be exactly 16 characters long")
+        else:
+            return f"****-****-****-{value[-4:]}"
 
 
 class CreditCard(models.Model):
