@@ -1,8 +1,14 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.core import validators
 
+from main_app.validators import validate_menu_categories
+
 
 # Create your models here.
+
+
+
 class Restaurant(models.Model):
     name = models.CharField(
         max_length=100,
@@ -30,3 +36,32 @@ class Restaurant(models.Model):
             validators.MaxValueValidator(5, "Rating cannot exceed 5.00.")
         ]
     )
+
+
+class Menu(models.Model):
+    name = models.CharField(
+        max_length=100
+    )
+    description = models.TextField(
+        validators=[validate_menu_categories]
+    )
+    restaurant = models.ForeignKey(
+        to=Restaurant,
+        on_delete= models.CASCADE,
+    )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
