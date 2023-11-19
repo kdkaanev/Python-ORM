@@ -3,6 +3,7 @@ from decimal import Decimal
 from django.db import models
 from django.core import validators
 
+from main_app.mixins import RechargeEnergyMixin
 from main_app.validators import validate_name, validate_phone_number
 
 
@@ -132,18 +133,10 @@ class DiscountedProduct(Product):
         return f'Discounted Product: {self.name}'
 
 
-class RechargeEnergyMixin(models.Model):
-    class Meta:
-        abstract = True
-
-    @staticmethod
-    def recharge_energy(amount: int):
-        Hero.energy += amount
-        if Hero.energy > 100:
-            Hero.energy = 100
 
 
-class Hero(RechargeEnergyMixin):
+
+class Hero(models.Model, RechargeEnergyMixin):
     name = models.CharField(
         max_length=100,
     )
