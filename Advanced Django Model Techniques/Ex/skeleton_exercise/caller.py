@@ -1,4 +1,6 @@
 import os
+from decimal import Decimal
+
 import django
 from django.core.exceptions import ValidationError
 
@@ -8,5 +10,6 @@ from django.core.exceptions import ValidationError
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "orm_skeleton.settings")
 django.setup()
 
-from main_app.models import Book
+from main_app.models import Book, Product, DiscountedProduct
 
+# Create a Product instance

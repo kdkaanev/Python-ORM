@@ -124,10 +124,52 @@ class DiscountedProduct(Product):
     def calculate_tax(self) -> Decimal:
         return self.price * Decimal(0.05)
 
-
     @staticmethod
     def calculate_shipping_cost(weight: Decimal) -> Decimal:
         return weight * Decimal(1.50)
 
     def format_product_name(self) -> str:
         return f'Discounted Product: {self.name}'
+
+
+class RechargeEnergyMixin(models.Model):
+    class Meta:
+        abstract = True
+
+    @staticmethod
+    def recharge_energy(amount: int):
+        Hero.energy += amount
+        if Hero.energy > 100:
+            Hero.energy = 100
+
+
+class Hero(RechargeEnergyMixin):
+    name = models.CharField(
+        max_length=100,
+    )
+    hero_title = models.CharField(
+        max_length=100,
+    )
+    energy = models.PositiveIntegerField()
+
+
+class SpiderHero(Hero):
+    class Meta:
+        proxy = True
+
+    def swing_from_buildings(self) -> str:
+        if self.energy <= 0:
+            return f"{self.name} as Spider Hero is out of web shooter fluid"
+        super().save()
+        return f"{self.name} as Spider Hero swings from buildings using web shooters"
+
+
+class FlashHero(Hero):
+    class Meta:
+        proxy = True
+
+    def run_at_super_speed(self) -> str:
+        if self.energy <= 0:
+            return f"{self.name} as Flash Hero needs to recharge the speed force"
+        super().save()
+        return f"{self.name} as Flash Hero runs at lightning speed, saving the day"
