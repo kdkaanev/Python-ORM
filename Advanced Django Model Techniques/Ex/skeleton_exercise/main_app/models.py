@@ -158,9 +158,10 @@ class SpiderHero(Hero):
         proxy = True
 
     def swing_from_buildings(self) -> str:
+        self.energy -= 80
         if self.energy <= 0:
             return f"{self.name} as Spider Hero is out of web shooter fluid"
-        super().save()
+        self.save()
         return f"{self.name} as Spider Hero swings from buildings using web shooters"
 
 
@@ -169,7 +170,8 @@ class FlashHero(Hero):
         proxy = True
 
     def run_at_super_speed(self) -> str:
+        self.energy -= 65
         if self.energy <= 0:
             return f"{self.name} as Flash Hero needs to recharge the speed force"
-        super().save()
+        self.save()
         return f"{self.name} as Flash Hero runs at lightning speed, saving the day"
