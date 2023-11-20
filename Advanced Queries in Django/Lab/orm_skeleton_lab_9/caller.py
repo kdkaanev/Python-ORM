@@ -71,4 +71,4 @@ def product_quantity_ordered():
     for product in total_products_ordered:
         result.append(f'Quantity ordered of {product.name}: {product.total_ordered_quantity}')
 
-    return '/n'.join(result)
+    return '\n'.join(result)
