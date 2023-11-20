@@ -14,7 +14,7 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     is_available = models.BooleanField(default=True)
 
-    object = ProductManager()
+    objects = ProductManager()
 
     def __str__(self):
         return f"{self.category.name}: {self.name}"
