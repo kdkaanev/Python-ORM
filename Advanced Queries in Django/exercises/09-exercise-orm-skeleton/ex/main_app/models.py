@@ -20,7 +20,7 @@ class RealEstateListing(models.Model):
     bedrooms = models.PositiveIntegerField()
     location = models.CharField(max_length=100)
 
-    object = RealEstateListingManager()
+    objects = RealEstateListingManager()
 
 
 class VideoGame(models.Model):
