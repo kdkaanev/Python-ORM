@@ -61,14 +61,12 @@ def add_records_to_database():
 
 # Run and print your queries
 #print(add_records_to_database())
-def product_quantity_ordered():
-    total_products_ordered = (
-        Product.objects.annotate(total_ordered_quantity=Sum('orderproduct__quantity'))
-        .exclude(total_ordered_quantity=None)
-        .order_by('-total_ordered_quantity')
-    )
+def ordered_products_per_customer():
+    orders = Order.objects.prefetch_related('orderproduct_set__product__category')
     result = []
-    for product in total_products_ordered:
-        result.append(f'Quantity ordered of {product.name}: {product.total_ordered_quantity}')
-
+    for order in orders:
+        result.append(f'Order ID: {order.id}, Customer: {order.customer.username}')
+        for order_product in order.orderproduct_set.all():
+            result.append(f'- Product: {order_product.product.name}, Category: {order_product.product.category.name}')
     return '\n'.join(result)
+
