@@ -82,8 +82,7 @@ from django.db.models import Q
 
 def filter_products():
     query = Q(is_available=True) & Q(price__gt=3)
-    products = Product.objects.filter(query)
-
+    products = Product.objects.filter(query).order_by('-price', 'name')
     result = []
     for product in products:
         result.append(f'{product.name}: {product.price}lv.')
