@@ -20,7 +20,7 @@ class RealEstateListingManager(models.Manager):
 
 class VideoGameManager(models.Manager):
 
-    def by_genre(self, genre: str) -> QuerySet:
+    def games_by_genre(self, genre: str) -> QuerySet:
         return self.filter(genre=genre)
 
     def recently_released_games(self, year: int) -> QuerySet:
@@ -33,5 +33,5 @@ class VideoGameManager(models.Manager):
         return self.order_by('rating').first()
 
     def average_rating(self):
-        avg_rating = self.aggregate(models.Avg('rating'))['average_rating']
-        return f'{avg_rating}:2f.'
+        avg_rating = self.aggregate(average_rating=models.Avg('rating'))['average_rating']
+        return f'{avg_rating:2f.}'
