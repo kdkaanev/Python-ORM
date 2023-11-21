@@ -77,15 +77,18 @@ def add_records_to_database():
 
 # Run and print your queries
 # print(add_records_to_database())
-from django.db.models import Q
+from django.db.models import Q, F
 
 
-def filter_products():
+def give_discount():
+    reduction = F('price') * 0.7
     query = Q(is_available=True) & Q(price__gt=3)
     products = Product.objects.filter(query).order_by('-price', 'name')
+    products.update(price=reduction)
+
     result = []
     for product in products:
-        result.append(f'{product.name}: {product.price}lv.')
+        result.append(f"{product.name}: {product.price}lv")
 
     return '\n'.join(result)
 
