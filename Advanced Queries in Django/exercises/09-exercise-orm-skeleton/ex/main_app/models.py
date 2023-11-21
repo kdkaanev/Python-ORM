@@ -2,6 +2,10 @@ from django.db import models
 
 from main_app.managers import RealEstateListingManager
 
+from django.core import validators
+
+from main_app.validators import video_game_rating_validate, video_game_release_year_validate
+
 
 # Create your models here.
 
@@ -34,8 +38,20 @@ class VideoGame(models.Model):
 
     title = models.CharField(max_length=100)
     genre = models.CharField(max_length=100, choices=GENRE_CHOICES)
-    release_year = models.PositiveIntegerField()
-    rating = models.DecimalField(max_digits=2,decimal_places=1)
+    release_year = models.PositiveIntegerField(
+        validators=[
+            video_game_release_year_validate,
+        ]
+    )
+    rating = models.DecimalField(
+        max_digits=2,
+        decimal_places=1,
+        validators=[
+            video_game_rating_validate,
+        ]
+    )
+
+
 
     def __str__(self):
         return self.title
