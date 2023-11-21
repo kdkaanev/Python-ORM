@@ -1,6 +1,6 @@
 from django.db import models
 
-from main_app.managers import RealEstateListingManager
+from main_app.managers import RealEstateListingManager, VideoGameManager
 
 from django.core import validators
 
@@ -50,6 +50,7 @@ class VideoGame(models.Model):
             video_game_rating_validate,
         ]
     )
+    objects = VideoGameManager()
 
 
 
