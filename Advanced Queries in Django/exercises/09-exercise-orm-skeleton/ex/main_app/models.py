@@ -75,7 +75,7 @@ class Invoice(models.Model):
 
     @classmethod
     def get_invoice_with_billing_info(cls, invoice_number: str):
-        return cls.objects.prefetch_related('billing_info').filter(invoice_number=invoice_number)
+        return cls.objects.prefetch_related('billing_info').get(invoice_number=invoice_number)
 
 
 class Technology(models.Model):
