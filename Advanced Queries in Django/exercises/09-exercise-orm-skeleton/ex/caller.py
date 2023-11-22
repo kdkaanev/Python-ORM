@@ -11,9 +11,4 @@ django.setup()
 # Create and check models
 # Run and print your queries
 # Create instances of RealEstateListing with locations
-from main_app.models import RealEstateListing, VideoGame, Invoice, BillingInfo
-
-# Create BillingInfo instances with real addresses
-
-# Get invoices starting with a specific prefix
-
+from main_app.models import RealEstateListing, VideoGame, Invoice, BillingInfo, Programmer, Project, Technology
