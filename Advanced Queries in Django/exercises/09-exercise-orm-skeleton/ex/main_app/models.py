@@ -1,11 +1,13 @@
 from django.db import models
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Q, F
 
 from main_app.managers import RealEstateListingManager, VideoGameManager
 
 from django.core import validators
 
 from main_app.validators import video_game_rating_validate, video_game_release_year_validate
+
+from datetime import date
 
 
 # Create your models here.
@@ -99,6 +101,7 @@ class Programmer(models.Model):
     def get_projects_with_technologies(self) -> QuerySet:
         return self.projects.prefetch_related('technologies_used')
 
+
 class Task(models.Model):
     PRIORITIES = (
         ('Low', 'Low'),
@@ -113,6 +116,25 @@ class Task(models.Model):
     creation_date = models.DateField()
     completion_date = models.DateField()
 
+    @classmethod
+    def overdue_high_priority_tasks(cls) -> QuerySet:
+        query = Q(priority='High') & Q(is_completed=False) & Q(completion_date__gt=F('creation_date'))
+        return cls.objects.filter(query)
+
+    @classmethod
+    def completed_mid_priority_tasks(cls) -> QuerySet:
+        query = Q(priority='Medium') & Q(is_completed=True)
+        return cls.objects.filter(query)
+
+    @classmethod
+    def recent_completed_tasks(cls, days: int) -> QuerySet:
+        query = Q(is_completed=True) & Q(completion_date__gte=F('creation_date') - days)
+        return cls.objects.filter(query)
+
+    @classmethod
+    def search_tasks(cls,query: str) -> QuerySet:
+        query = Q(title__icontains=query) | Q(description__icontains=query)
+        return cls.objects.filter(query)
 
 class Exercise(models.Model):
     name = models.CharField(max_length=100)
