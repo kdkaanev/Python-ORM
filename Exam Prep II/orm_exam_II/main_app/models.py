@@ -41,7 +41,8 @@ class Product(DateTime):
 class Order (DateTime):
     profile = models.ForeignKey(
         to=Profile,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='orders'
     )
     products = models.ManyToManyField(to=Product)
     total_price = models.DecimalField(
