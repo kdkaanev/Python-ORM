@@ -1,6 +1,8 @@
 from django.db import models
 from django.core import validators
 
+from main_app.managers import ProfileManager
+
 
 class DateTime(models.Model):
     class Meta:
@@ -18,6 +20,8 @@ class Profile(DateTime):
     phone_number = models.CharField(max_length=15)
     address = models.TextField()
     is_active = models.BooleanField(default=True)
+
+    objects = ProfileManager()
 
 
 class Product(DateTime):
